@@ -2,13 +2,14 @@
  * quadcopterbody.c
  *
  * Created: 7/22/2012 9:40:29 PM
- *  Author: Steve
+ *  Author: Steve and Kyle
  */ 
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 void UsartInit(void);
+void Data_decoding(void);
 //variable
 
 char val="C";
@@ -52,16 +53,15 @@ ISR(USARTF0_RXC_vect)
 			count=count++;
 		rxData[count]=val;
 	}
-	ypos=(int)rxData[0];
-	ypos|=(int)rxData[1]<<8;	
-	xpos=(int)rxData[2];
-	xpos|=(int)rxData[3]<<8;
-		
-	//Usart_PutChar('d');
-}
-void Data_decoding
-	ypos=(int)rxData[0];
-	ypos|=(int)rxData[1]<<8;	
-	xpos=(int)rxData[2];
-	xpos|=(int)rxData[3]<<8;
 
+	PORTE_DIR |= 0x01;	
+	PORTE.OUTSET |= 0x01;
+	_delay_ms(100);
+	PORTE.OUTSET |= 0x01;
+}
+void Data_decoding(void){
+	ypos=(int)rxData[0];
+	ypos|=(int)rxData[1]<<8;	
+	xpos=(int)rxData[2];
+	xpos|=(int)rxData[3]<<8;
+	}
